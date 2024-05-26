@@ -1,0 +1,74 @@
+<%- include("partials/header.ejs") %>
+
+ <div class="books">
+      <div class="sort">
+        <p>Sort By:</p>
+        <form action="/sort" method="post">
+          <select name="sort" id="sort-option">
+             <option value="title">Title</option>
+             <option value="author">Author</option>
+             <option value="rating">Rating</option>
+          </select>
+          <input class="buttons_style" type="submit" value="Go">
+        </form>
+      </div>
+    
+     <% locals.books.forEach(book =>{ %> 
+        <div class="book">
+         <% if(book.cover_id == 0){ %> 
+            <div class="blank-cover">
+              <div>
+                <h3><%= book.title %></h3>
+                <h4>By <%= book.author %></h4>
+              </div>
+            </div>
+         <% } else { %> 
+           <img src="//covers.openlibrary.org/b/id/<%= book.cover_id %>-M.jpg"
+           srcset="//covers.openlibrary.org/b/id/<%= book.cover_id %>-M.jpg 2x" alt="Book cover">
+         <% } %> 
+         <div class="book-details">
+             <h2><%= book.title %></h2>
+             <h3>By <%= book.author %></h3>
+             <h3>Review:</h3>
+             <p>
+                <%= book.review_text %>
+             </p>
+             <h4>Review Date: 
+                <%= book.review_date %>
+             </h4>
+             <h4>Rating</h4>
+               <div class="rating" action="" method="post">
+                <% for (let i=0; i < book.rating; i++) { %>
+                  <span class="fa fa-star checked"></span>
+                  <% } %>
+                     <% if(book.rating < 5){ %>
+                       <% for ( let i=0; i < (5-book.rating); i++) { %>
+                          <span class="fa fa-star"></span>
+                       <% } %>
+                      <% } %>
+                </div>
+                <div class="button-container">
+                 <!-- The "?"" indicates the start of the query parameters in the URL. Following the ?, there are three key-value pairs -->
+                 <!-- and the information about the book (title, author, and cover ID) will be included in the URL as query parameters. -->
+                  <a 
+                    href="/book?title=<%= book.title %>&author=<%= book.author %>&coverId=<%= book.cover_id %>">
+                    <button class="buttons_style" type="button">Edit</button>
+                  </a>
+                 
+                  <form action="/delete" method="post">
+                    <input type="hidden" name="deleteItemId" value="<%= book.id %>">
+                    <button class="buttons_style" type="submit">Delete</button>
+                  </form>
+
+                </div>
+                
+            </div>
+
+        </div>
+    
+   <% }) %>
+
+</div>
+
+<%- include("partials/footer.ejs") %>
+

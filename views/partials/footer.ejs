@@ -1,0 +1,30 @@
+<footer>Copyright © <%= new Date().getFullYear() %></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    //the validateForm() function ensures that the user selects a rating before submitting the form. If no rating is selected, it displays an error message prompting the user to make a selection. 
+    function validateForm() {
+        const ratingInputs = document.getElementsByName('rating');
+        // This line converts the collection of radio buttons into an array using Array.from().
+        const selectedRating = Array.from(ratingInputs).find(input => input.checked);
+        //This condition checks if selectedRating is falsy (i.e., if no radio button is checked).
+        if (!selectedRating) {
+            document.getElementById('error-message').innerText = 'Please select a rating';
+        }
+    }
+
+    $(document).ready(function() {
+    $('.rating input[type="radio"]').on('click', function() {
+        // Remove 'selected' class from all radio inputs
+        $('.rating input[type="radio"]').removeClass('selected');
+        
+        // Add 'selected' class to the clicked radio input and all preceding radio inputs
+        $(this).addClass('selected').prevAll('input[type="radio"]').addClass('selected');
+    });
+    });
+
+    
+</script>
+<script src="/index.js"></script>
+</body>
+</html>
